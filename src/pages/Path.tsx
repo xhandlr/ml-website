@@ -1,6 +1,6 @@
 import cerebroImg from '../../src/assets/cerebro.png';
 import { motion } from 'framer-motion';
-import DecisionTreeAnimation from '../components/DecisionTreeAnimation';
+import DecisionTreeSimpleAnimation from '../components/DecisionTreeSimpleAnimation';
 import { Link } from 'react-router-dom';
 
 const Path = () => {
@@ -29,7 +29,7 @@ const Path = () => {
                           duration-300 hover:-translate-y-2 border border-[#46AA8C] 
                           hover:border-[#05F4F5]">
             <div className="h-48 bg-[#0f172a] flex items-center justify-center p-4">
-              <DecisionTreeAnimation />
+              <DecisionTreeSimpleAnimation />
             </div>
             <div className="p-8">
               <p className="text-lg text-white mb-4">

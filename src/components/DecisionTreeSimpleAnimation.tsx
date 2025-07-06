@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import type { Variants } from 'framer-motion';  // Solo tipo
+import type { Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 const positions = {
@@ -10,7 +10,7 @@ const positions = {
 
 const nodeStyle = "absolute rounded-full bg-[#65DCB8] w-6 h-6";
 
-const DecisionTreeAnimation = () => {
+const DecisionTreeSimpleAnimation = () => {
   const [visibleNodes, setVisibleNodes] = useState(0);
 
   const restartAnimation = () => {
@@ -125,4 +125,4 @@ const DecisionTreeAnimation = () => {
   );
 };
 
-export default DecisionTreeAnimation;
+export default DecisionTreeSimpleAnimation;
