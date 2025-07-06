@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 w-full bg-[#020617] text-white shadow-md z-50">
+    <nav className="fixed top-0 w-full bg-[#0D111A] text-white shadow-md z-50 border-b border-[#358E8C]">
       <div className="container mx-auto px-6 py-4 flex gap-10 justify-center items-center">
         <h1 className="text-xl font-bold">ML Interactivo</h1>
         <ul className="flex gap-10">
