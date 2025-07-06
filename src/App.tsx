@@ -1,6 +1,7 @@
 import Navbar from './components/Navbar.tsx';
 import Home from './pages/Home.tsx';
 import Path from './pages/Path.tsx';
+import DecisionTree from './pages/DecisionTree.tsx';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/path" element={<Path />} />
+            <Route path="/path-decision-tree" element={<DecisionTree />} />
           </Routes>
         </main>
       </div>
