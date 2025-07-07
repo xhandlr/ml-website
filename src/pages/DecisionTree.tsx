@@ -12,24 +12,23 @@ const steps = [
     thought: "", 
   },
   {
-    text: "Para eso, haces una pregunta como: ¿Este correo es spam?",
-    img: "🍽️",
-    thought: "¿Este correo es spam?", 
+    text: "Te haces una pregunta, por ejemplo: ¿Tengo hambre?",
+    img: "🍪",
+    thought: "¿Tengo hambre?", 
   },
   {
-    text: "Si la respuesta es SÍ, haces una cosa. Si es NO, haces otra.",
+    text: "Si la respuesta es SÍ, buscas galletas. Si es NO, sigues con tu rutina.",
     img: "🔀",
     thought: "¿Qué pasa si digo que no?",
   },
   {
-    text: "Esto lo puedes poner en un dibujo como un árbol... ¡Un árbol de decisiones!",
+    text: "Si lo miras bien, esto parece un árbol... ¡Un árbol de decisiones!",
     img: "🌳",
-    thought: "Esto parece un árbol con decisiones...",
   },
   {
-    text: "¡Cada rama del árbol es una decisión diferente!",
-    img: "🌿",
-    thought: "¡Esta rama dice que debo dormir!",
+    text: "En un árbol de decisiones hay: nodos, decisiones, ramas y hojas.",
+    img: "📌",
+    thought: "¿Qué es cada cosa?",
   },
   {
     text: "¡Muy bien! Ahora creemos tu primer árbol de decisiones 🎉",
@@ -94,8 +93,8 @@ const DecisionTree = () => {
           />
         </div>
         <div className="flex-1 h-[400px] flex items-center justify-center relative">
-          {step === 2 ? (
-            <DecisionFlowExample/>
+          {step === 2 || step === 3 ? (
+            <DecisionFlowExample animate={step === 2} />
           ) : (
             <>
               <img
@@ -103,7 +102,6 @@ const DecisionTree = () => {
                 alt="Robot"
                 className="w-60 md:w-72 object-contain"
               />
-
               {steps[step].thought && (
                 <motion.div
                   key={`thought-${step}`}
