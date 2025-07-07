@@ -9,12 +9,12 @@ const steps = [
   {
     text: "¡Hola! Imagina que eres un robot y debes tomar una decisión.",
     img: "🤖",
-    thought: "", 
+    thought: "",
   },
   {
     text: "Te haces una pregunta, por ejemplo: ¿Tengo hambre?",
     img: "🍪",
-    thought: "¿Tengo hambre?", 
+    thought: "¿Tengo hambre?",
   },
   {
     text: "Si la respuesta es SÍ, buscas galletas. Si es NO, sigues con tu rutina.",
@@ -26,14 +26,29 @@ const steps = [
     img: "🌳",
   },
   {
-    text: "En un árbol de decisiones hay: nodos, decisiones, ramas y hojas.",
-    img: "📌",
-    thought: "¿Qué es cada cosa?",
+    text: "Un nodo es un punto donde se toma una decisión o se hace una pregunta.",
+    img: "🔘",
+    thought: "Aquí decides qué camino seguir.",
   },
   {
-    text: "¡Muy bien! Ahora creemos tu primer árbol de decisiones 🎉",
+    text: "Una decisión es la respuesta que eliges para seguir un camino.",
+    img: "⚖️",
+    thought: "¿Sí o no? ¿Qué eliges?",
+  },
+  {
+    text: "Una rama conecta decisiones entre nodos, mostrando el camino a seguir.",
+    img: "🌿",
+    thought: "Es el camino que tomas al decidir.",
+  },
+  {
+    text: "Una hoja es el resultado final o conclusión de un camino de decisiones.",
+    img: "🍂",
+    thought: "Aquí termina el árbol, con una acción o resultado.",
+  },
+  {
+    text: "¡Muy bien! Ahora probemos otro ejemplo 🎉",
     img: "🎓",
-    thought: "¡Estoy listo para decidir!",
+    thought: "¡Vamos!",
   },
 ];
 
@@ -47,9 +62,7 @@ const DecisionTree = () => {
   return (
     <div className="min-h-screen bg-[#151C29] text-white flex items-center justify-center px-6 py-12">
       <div className="flex flex-col md:flex-row items-center gap-10 w-full max-w-6xl">
-
         <div className="relative flex flex-col items-center">
-          {/* Tarjeta de diálogo */}
           <motion.div
             key={step}
             initial={{ opacity: 0, y: 20 }}
@@ -57,9 +70,8 @@ const DecisionTree = () => {
             transition={{ duration: 0.4 }}
             className="bg-[#1e293b] p-6 rounded-xl shadow-lg max-w-xs text-center relative"
           >
-            {/* Flecha tipo globo */}
             <div className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 w-0 h-0 
-                border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#1e293b]" />
+              border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#1e293b]" />
             <div className="text-4xl mb-3">{steps[step].img}</div>
             <h2 className="text-base md:text-lg">{steps[step].text}</h2>
 
@@ -68,7 +80,7 @@ const DecisionTree = () => {
                 <button
                   onClick={nextStep}
                   className="text-[#6CDFBC] border border-[#46AA8C] px-5 py-1.5 rounded-md
-                        hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
+                    hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
                 >
                   Siguiente
                 </button>
@@ -76,7 +88,7 @@ const DecisionTree = () => {
                 <Link to="/decision-tree-menu">
                   <button
                     className="text-[#6CDFBC] border border-[#46AA8C] px-5 py-1.5 rounded-md
-                            hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
+                      hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
                   >
                     ¡Vamos!
                   </button>
@@ -85,16 +97,26 @@ const DecisionTree = () => {
             </div>
           </motion.div>
 
-          {/* Robot pequeño debajo */}
           <img
             src={robotImg}
             alt="Robot"
             className="w-36 md:w-48 mt-6 object-contain"
           />
         </div>
+
         <div className="flex-1 h-[400px] flex items-center justify-center relative">
-          {step === 2 || step === 3 ? (
-            <DecisionFlowExample animate={step === 2} />
+          {(step >= 2 && step <= 7) ? (
+            <DecisionFlowExample
+              animateTree={step === 2}
+              showTreeImage={step === 3}
+              highlightPart={
+                step === 4 ? "node" :
+                step === 5 ? "decision" :
+                step === 6 ? "branch" :
+                step === 7 ? "leaf" :
+                undefined
+              }
+            />
           ) : (
             <>
               <img
