@@ -18,7 +18,7 @@ const steps = [
   },
   {
     text: "Si la respuesta es SÍ, buscas galletas. Si es NO, sigues con tu rutina.",
-    img: "🔀",
+    img: "↳",
     thought: "¿Qué pasa si digo que no?",
   },
   {

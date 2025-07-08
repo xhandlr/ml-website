@@ -7,7 +7,7 @@ const Navbar = () => {
         <h1 className="text-xl font-bold">ML Interactivo</h1>
         <ul className="flex gap-10">
           <li><Link to="/" className="text-white hover:text-yellow-300">Inicio</Link></li>
-          <li><Link to="/decision-tree" className="text-white hover:text-yellow-300">Árboles de Decisión</Link></li>
+          <li><Link to="/decision-tree-menu" className="text-white hover:text-yellow-300">Árboles de Decisión</Link></li>
           <li><Link to="/reinforcement-learning" className="text-white hover:text-yellow-300">Reinforcement Learning</Link></li>
           <li><Link to="/conclusiones" className="text-white hover:text-yellow-300">Conclusiones</Link></li>
         </ul>
