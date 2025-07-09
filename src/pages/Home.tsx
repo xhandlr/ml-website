@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="min-h-screen w-full flex flex-col md:flex-row items-center justify-center bg-[#151C29]">
       {/* Contenedor principal con márgenes */}
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-8 py-12 gap-12">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center px-8 py-12 gap-8 md:gap-6 lg:gap-4">
         {/* Sección de texto */}
         <div className="md:w-[45%] flex flex-col items-center md:items-start text-center md:text-left">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">

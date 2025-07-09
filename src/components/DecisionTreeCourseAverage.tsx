@@ -33,7 +33,7 @@ const DecisionTreeExample: React.FC<DecisionTreeExampleProps> = ({
     const rectWidth = 260;
     const rectHeight = 60;
 
-    const promFinal = 0.6 * averageGrade + 0.4 * examGrade;
+    const requiredExam = Math.max(1.0, Math.min(7.0, (4.0 - 0.6 * averageGrade) / 0.4));
 
     const data: TreeNode = {
       name: `¿Promedio >= 4.0? (${averageGrade.toFixed(2)})`,
@@ -52,7 +52,7 @@ const DecisionTreeExample: React.FC<DecisionTreeExampleProps> = ({
               id: "reprueba-directo"
             },
             {
-              name: `¿Exámen >= 4.0? (${promFinal.toFixed(2)})`,
+              name: `¿Examen ≥ ${requiredExam.toFixed(2)}?`,
               id: "eval-final",
               children: [
                 { name: "✅ Aprueba", id: "aprueba-final" },
