@@ -35,7 +35,7 @@ const DecisionTreeSimpleAnimation = () => {
 
   return (
     <div
-      className="relative w-[260px] h-[180px] bg-[#0f172a] rounded-md"
+      className="relative w-[260px] h-[180px] bg-transparent rounded-md"
       onMouseEnter={restartAnimation}
     >
       {visibleNodes >= 2 && (
