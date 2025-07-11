@@ -75,7 +75,7 @@ const DecisionTreeSimpleAnimation = () => {
 
           {/* Línea del nodo raíz al nodo derecho */}
           <motion.line
-            x1={positions.root.x + 20}  // Igual que el izquierdo, para que salga del mismo centro
+            x1={positions.root.x + 12}  // Igual que el izquierdo, para que salga del mismo centro
             y1={positions.root.y + 12}
             x2={positions.right.x + 12} // 180 + 12 = 192
             y2={positions.right.y + 12} // 120 + 12 = 132
