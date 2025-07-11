@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../components/DecisionTreeMenu/Sidebar";
-import CourseGradingFlow from "../components/DecisionTreeMenu/flows/CourseGradingFlow";
-import IrisClassifierFlow from "../components/DecisionTreeMenu/flows/IrisClassifierFlow";
+import CourseGradingFlow from "../components/GradeExample/GradeClassifierFlow";
+import IrisClassifierFlow from "../components/IrisExample/IrisClassifierFlow";
 import type { CourseAverageType } from "../components/DecisionTreeMenu/types";
 
 const DecisionTreeMenu: React.FC = () => {

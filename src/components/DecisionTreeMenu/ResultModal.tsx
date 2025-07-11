@@ -1,41 +1,31 @@
 import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Confetti from "react-confetti";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "antd";
 
-interface ResultModalProps {
+const modalVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.8 },
+};
+
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 0.5 },
+  exit: { opacity: 0 },
+};
+
+interface Props {
   show: boolean;
   message: string | null;
-  showConfetti: boolean;
+  showConfetti?: boolean; 
   onClose: () => void;
 }
 
-const ResultModal: React.FC<ResultModalProps> = ({ show, message, showConfetti, onClose }) => {
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.8 },
-  };
-
-  const overlayVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 0.5 },
-    exit: { opacity: 0 },
-  };
-
+const ResultModal: React.FC<Props> = ({ show, message, onClose }) => {
   return (
     <AnimatePresence>
       {show && message && (
         <>
-          {showConfetti && (
-            <Confetti
-              width={window.innerWidth}
-              height={window.innerHeight}
-              recycle={false}
-              numberOfPieces={500}
-              style={{ position: "fixed", zIndex: 45 }}
-            />
-          )}
           <motion.div
             className="fixed inset-0 bg-black z-40"
             variants={overlayVariants}
@@ -52,8 +42,13 @@ const ResultModal: React.FC<ResultModalProps> = ({ show, message, showConfetti, 
             exit="exit"
           >
             <div className="bg-[#1e293b] rounded-xl p-8 max-w-md w-full text-center shadow-lg relative">
-              <p className="text-2xl font-bold mb-6">{message}</p>
-              <Button type="primary" onClick={onClose} size="large" className="bg-[#8b5cf6] hover:bg-[#7c3aed]">
+              <p className="text-4xl mb-6">{message}</p>
+              <Button
+                type="primary"
+                onClick={onClose}
+                size="large"
+                className="bg-[#8b5cf6] hover:bg-[#7c3aed]"
+              >
                 Seguir probando
               </Button>
             </div>

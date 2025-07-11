@@ -1,8 +1,7 @@
-// components/DecisionTreeMenu/flows/CourseGradingFlow.tsx
 import React, { useState } from "react";
-import GradeInputs from "../GradeInputs";
-import TreeVisualizer from "../TreeVisualizer";
-import ResultModal from "../ResultModal";
+import GradeInputs from "./GradeInputs";
+import TreeVisualizer from "./GradeVisualizer";
+import ResultModal from "../DecisionTreeMenu/ResultModal";
 
 const CourseGradingFlow: React.FC = () => {
   const [grades, setGrades] = useState<number[]>([1, 1, 1]);

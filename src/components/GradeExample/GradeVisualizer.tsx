@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import DecisionTreeCourseAverage from "../DecisionTreeCourseAverage";
+import GradeDecisionTreeDiagram from "./GradeDecisionTreeDiagram";
 
 interface TreeVisualizerProps {
   activePath: string[];
@@ -21,7 +21,7 @@ const TreeVisualizer: React.FC<TreeVisualizerProps> = ({
     transition={{ duration: 0.5, delay: 0.2 }}
     className="w-full lg:w-2/3"
   >
-    <DecisionTreeCourseAverage
+    <GradeDecisionTreeDiagram
       activePath={activePath}
       currentStep={currentStep}
       averageGrade={averageGrade}

@@ -7,18 +7,13 @@ interface TreeNode {
   id: string;
 }
 
-interface DecisionTreeExampleProps {
+interface Props {
   activePath: string[];
-  currentStep: number;
-  averageGrade: number;
-  examGrade: number;
+  petalLength: number;
+  petalWidth: number;
 }
 
-const DecisionTreeExample: React.FC<DecisionTreeExampleProps> = ({
-  activePath,
-  averageGrade,
-  examGrade
-}) => {
+const IrisDecisionTreeDiagram: React.FC<Props> = ({ activePath, petalLength, petalWidth }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -29,46 +24,37 @@ const DecisionTreeExample: React.FC<DecisionTreeExampleProps> = ({
     svg.selectAll("*").remove();
 
     const width = 900;
-    const height = 600;
+    const height = 400;
     const rectWidth = 260;
     const rectHeight = 60;
 
-    const requiredExam = Math.max(1.0, Math.min(7.0, (4.0 - 0.6 * averageGrade) / 0.4));
-
     const data: TreeNode = {
-      name: `¿Promedio >= 4.0? (${averageGrade.toFixed(2)})`,
-      id: "promedio",
+      name: `¿Largo pétalo < 2.45? (${petalLength.toFixed(2)})`,
+      id: "petalLength",
       children: [
         {
-          name: "✅ Aprueba",
-          id: "aprueba-directo"
+          name: "🌸 Setosa",
+          id: "setosa"
         },
         {
-          name: `¿Promedio < 3.6? (${averageGrade.toFixed(2)})`,
-          id: "bajo36",
+          name: `¿Ancho pétalo < 1.75? (${petalWidth.toFixed(2)})`,
+          id: "petalWidth",
           children: [
-            {
-              name: "❌ No aprueba",
-              id: "reprueba-directo"
-            },
-            {
-              name: `¿Examen ≥ ${requiredExam.toFixed(2)}?`,
-              id: "eval-final",
-              children: [
-                { name: "✅ Aprueba", id: "aprueba-final" },
-                { name: "❌ No aprueba", id: "reprueba-final" }
-              ]
-            }
+            { name: "🌺 Versicolor", id: "versicolor" },
+            { name: "🌹 Virginica", id: "virginica" }
           ]
         }
       ]
     };
 
     const root = d3.hierarchy(data);
-    const treeLayout = d3.tree<TreeNode>().size([width + 200, height - 200]);
+    const treeLayout = d3.tree<TreeNode>().size([width + 100, height - 100]);
     treeLayout(root);
 
-    const g = svg.append("g").attr("transform", "translate(-110,70)");
+    const xOffset = 900 / 2.2 - root.x!;  // centramos respecto al SVG real, no al layout width
+    const yOffset = 70;
+
+    const g = svg.append("g").attr("transform", `translate(${xOffset}, ${yOffset})`);
 
     const isLinkActive = (d: any) => {
       const sourceId = d.source.data.id;
@@ -112,8 +98,9 @@ const DecisionTreeExample: React.FC<DecisionTreeExampleProps> = ({
         const isHovered = d.data.id === hoveredId;
         const isActive = activePath.includes(d.data.id);
         if (isActive) return isHovered ? "#5b21b6" : "#4c1d95";
-        if (d.data.name.includes("✅")) return isHovered ? "#047857" : "#059669";
-        if (d.data.name.includes("❌")) return isHovered ? "#b91c1c" : "#dc2626";
+        if (d.data.name.includes("Setosa")) return isHovered ? "#0d9488" : "#14b8a6";
+        if (d.data.name.includes("Versicolor")) return isHovered ? "#f59e0b" : "#fbbf24";
+        if (d.data.name.includes("Virginica")) return isHovered ? "#dc2626" : "#ef4444";
         return isHovered ? "#334155" : "#1e293b";
       })
       .attr("stroke", d =>
@@ -130,19 +117,20 @@ const DecisionTreeExample: React.FC<DecisionTreeExampleProps> = ({
       .style("font-family", "sans-serif")
       .text(d => d.data.name);
 
-  }, [activePath, averageGrade, examGrade, hoveredId]);
+  }, [activePath, petalLength, petalWidth, hoveredId]);
 
   return (
     <div className="bg-[#1e293b] p-6 rounded-xl shadow-lg h-full">
       <svg
         ref={svgRef}
         width="100%"
-        height="600"
-        viewBox="0 0 900 600"
+        height="500"
+        viewBox="0 0 900 500"
         style={{ background: "transparent" }}
       ></svg>
     </div>
   );
 };
 
-export default DecisionTreeExample;
+export default IrisDecisionTreeDiagram;
+
