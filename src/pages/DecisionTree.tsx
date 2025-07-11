@@ -64,11 +64,10 @@ const DecisionTree = () => {
       <div className="flex flex-col md:flex-row items-center gap-10 w-full max-w-6xl">
         <div className="relative flex flex-col items-center">
           <motion.div
-            key={step}
-            initial={{ opacity: 0, y: 20 }}
+            initial={step === 0 ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="bg-[#1e293b] p-6 rounded-xl shadow-lg max-w-xs text-center relative"
+            className="bg-[#1e293b] p-6 rounded-xl shadow-lg w-[280px] md:w-[300px] h-[230px] text-center relative flex flex-col justify-between"
           >
             <div className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 w-0 h-0 
               border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#1e293b]" />
