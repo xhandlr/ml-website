@@ -143,6 +143,7 @@ const Home = () => {
           descriptionPoints={descriptionML}
           titleColor="#65DCB8"
           titleTextColor="#1d0735ff"
+          clickText='¿Qué es el Machine Learning?'
           nodeSize={80}
           showClickText={true}
           onNodeToggle={handleNodeToggle}
@@ -153,6 +154,7 @@ const Home = () => {
               descriptionPoints={descriptionArbolesDecision}
               titleColor="#7fff15"
               titleTextColor="#000"
+              clickText='Árboles de decisión'
               nodeSize={30}
               showClickText={true}
               onNodeToggle={handleNodeToggle}
@@ -165,6 +167,7 @@ const Home = () => {
               descriptionPoints={descriptionAprendizajeRefuerzo}
               titleColor="#29ffff"
               titleTextColor="#000"
+              clickText='Aprendizaje por refuerzo'
               nodeSize={30}
               showClickText={true}
               onNodeToggle={handleNodeToggle}

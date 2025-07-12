@@ -51,7 +51,7 @@ const IrisDecisionTreeDiagram: React.FC<Props> = ({ activePath, petalLength, pet
     const treeLayout = d3.tree<TreeNode>().size([width + 100, height - 100]);
     treeLayout(root);
 
-    const xOffset = 900 / 2.2 - root.x!;  // centramos respecto al SVG real, no al layout width
+    const xOffset = 900 / 2.2 - root.x!; 
     const yOffset = 70;
 
     const g = svg.append("g").attr("transform", `translate(${xOffset}, ${yOffset})`);
@@ -98,9 +98,9 @@ const IrisDecisionTreeDiagram: React.FC<Props> = ({ activePath, petalLength, pet
         const isHovered = d.data.id === hoveredId;
         const isActive = activePath.includes(d.data.id);
         if (isActive) return isHovered ? "#5b21b6" : "#4c1d95";
-        if (d.data.name.includes("Setosa")) return isHovered ? "#0d9488" : "#14b8a6";
-        if (d.data.name.includes("Versicolor")) return isHovered ? "#f59e0b" : "#fbbf24";
-        if (d.data.name.includes("Virginica")) return isHovered ? "#dc2626" : "#ef4444";
+        if (d.data.name.includes("Setosa")) return isHovered ? "#09613e" : "#066f68";
+        if (d.data.name.includes("Versicolor")) return isHovered ? "#660364" : "#81027f";
+        if (d.data.name.includes("Virginica")) return isHovered ? "#5c0606" : "#700923";
         return isHovered ? "#334155" : "#1e293b";
       })
       .attr("stroke", d =>

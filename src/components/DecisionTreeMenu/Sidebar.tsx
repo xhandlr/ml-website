@@ -7,8 +7,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect }) => (
-  <div className="w-64 bg-[#1e293b] p-4 border-r border-[#334155] flex">
-    <div className="my-auto flex flex-col w-full">
+  <div className="w-64 bg-[#1e293b] p-4 border-r border-[#334155] flex flex-col justify-start min-h-screen">
+    <div className="flex flex-col w-full justify-start">
       <h2 className="text-xl font-bold mb-6 text-[#65DCB8] p-2 border-b border-[#334155]">
         Ejemplos Disponibles
       </h2>

@@ -112,8 +112,8 @@ const GradeDecisionTreeDiagram: React.FC<DecisionTreeExampleProps> = ({
         const isHovered = d.data.id === hoveredId;
         const isActive = activePath.includes(d.data.id);
         if (isActive) return isHovered ? "#5b21b6" : "#4c1d95";
-        if (d.data.name.includes("✅")) return isHovered ? "#047857" : "#059669";
-        if (d.data.name.includes("❌")) return isHovered ? "#b91c1c" : "#dc2626";
+        if (d.data.name.includes("✅")) return isHovered ? "#208065" : "#036348";
+        if (d.data.name.includes("❌")) return isHovered ? "#672121" : "#730f0f";
         return isHovered ? "#334155" : "#1e293b";
       })
       .attr("stroke", d =>

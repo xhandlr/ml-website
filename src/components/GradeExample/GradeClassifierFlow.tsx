@@ -9,7 +9,7 @@ const CourseGradingFlow: React.FC = () => {
   const [activePath, setActivePath] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
-  const [showConfetti, setShowConfetti] = useState(false);
+  
 
   const calculateAverage = () =>
     grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
@@ -20,14 +20,12 @@ const CourseGradingFlow: React.FC = () => {
     setActivePath([]);
     setCurrentStep(0);
     setModalMessage(null);
-    setShowConfetti(false);
   };
 
   const evaluateDecision = () => {
     setActivePath([]);
     setCurrentStep(0);
     setModalMessage(null);
-    setShowConfetti(false);
 
     const average = calculateAverage();
     const path: string[] = [];
@@ -43,7 +41,6 @@ const CourseGradingFlow: React.FC = () => {
           setActivePath([...path]);
           setCurrentStep(2);
           setModalMessage("✅ ¡Has aprobado el curso! 🎉");
-          setShowConfetti(true);
         }, 1000);
       } else {
         setTimeout(() => {
@@ -55,9 +52,8 @@ const CourseGradingFlow: React.FC = () => {
             setTimeout(() => {
               path.push("reprueba-directo");
               setActivePath([...path]);
-              setModalMessage("❌ No apruebas (promedio insuficiente)");
+              setModalMessage("❌ Has reprobado el curso");
               setCurrentStep(3);
-              setShowConfetti(false);
             }, 1000);
           } else {
             setTimeout(() => {
@@ -75,7 +71,6 @@ const CourseGradingFlow: React.FC = () => {
                   path.push("aprueba-final");
                   setActivePath([...path]);
                   setModalMessage("✅ ¡Has aprobado el curso! 🎉");
-                  setShowConfetti(true);
                   setCurrentStep(4);
                 }, 1000);
               } else {
@@ -84,7 +79,6 @@ const CourseGradingFlow: React.FC = () => {
                   setActivePath([...path]);
                   setModalMessage("❌ No apruebas (nota de examen insuficiente)");
                   setCurrentStep(4);
-                  setShowConfetti(false);
                 }, 1000);
               }
             }, 1000);
@@ -123,7 +117,6 @@ const CourseGradingFlow: React.FC = () => {
       <ResultModal
         show={!!modalMessage}
         message={modalMessage}
-        showConfetti={showConfetti}
         onClose={resetEvaluation}
       />
     </>
