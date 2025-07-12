@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ScrollDownButton from '../components/Home/ScrollDownButton';
 import DecisionTreeSimpleAnimation from '../components/DecisionTreeSimpleAnimation';
+import MiniMazeAnimation from '../components/MiniMazeAnimation';
 
 const descriptionML = [
   "Rama de la inteligencia artificial.",
@@ -96,7 +97,7 @@ const Home = () => {
         <InteractiveNode
           title="ML"
           descriptionPoints={descriptionML}
-          clickText="Haz clic en los círculos para explorar"
+          clickText="¿Qué es el Machine Learning?"
           titleColor="#65DCB8"
           titleTextColor="#1d0735ff"
           nodeSize={80}
@@ -105,23 +106,25 @@ const Home = () => {
           <InteractiveNode
             title=""
             descriptionPoints={descriptionArbolesDecision}
-            titleColor="#f97316"
+            titleColor="#7fff15"
             clickText="Árboles de decisión"
             titleTextColor="#000"
             nodeSize={30}
           >
-            {/* Aquí pegamos directo la animación sin margen */}
             <DecisionTreeSimpleAnimation />
           </InteractiveNode>
 
-            <InteractiveNode
-              title=""
-              descriptionPoints={descriptionAprendizajeRefuerzo}
-              titleColor="#d4b7efff"
-              clickText="Aprendizaje por refuerzo"
-              titleTextColor="#000"
-              nodeSize={30}
-            />
+    
+          <InteractiveNode
+            title=""
+            descriptionPoints={descriptionAprendizajeRefuerzo}
+            titleColor="#29ffff"
+            clickText="Aprendizaje por refuerzo"
+            titleTextColor="#000"
+            nodeSize={30}
+          >
+            <MiniMazeAnimation />
+          </InteractiveNode>
           </div>
         </InteractiveNode>
       </div>

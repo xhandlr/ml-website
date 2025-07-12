@@ -9,8 +9,8 @@ const Navbar = () => {
   const navLinks = [
     { path: "/", label: "Inicio" },
     { path: "/decision-tree-menu", label: "Árboles de Decisión" },
-    { path: "/reinforcement-learning", label: "Reinforcement Learning" },
-    { path: "/conclusiones", label: "Conclusiones" },
+    { path: "/reinforcement-learning", label: "Aprendizaje por Refuerzo" },
+    { path: "/comparative", label: "Comparativa" },
   ];
 
   return (

@@ -14,7 +14,7 @@ const DecisionTreeMenu: React.FC = () => {
         selected={selectedCourseAverage}
         onSelect={setSelectedCourseAverage}
       />
-      <div className="flex-grow flex flex-col items-center justify-center px-6 py-12 w-full">
+      <div className="flex-grow flex flex-col items-center justify-start px-6 pt-2 pb-6 w-full">
         {selectedCourseAverage === "calificacion" ? (
           <CourseGradingFlow />
         ) : (

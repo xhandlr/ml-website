@@ -1,6 +1,6 @@
-import cerebroImg from '../../src/assets/cerebro.png';
 import { motion } from 'framer-motion';
 import DecisionTreeSimpleAnimation from '../components/DecisionTreeSimpleAnimation';
+import MiniMazeAnimation from '../components/MiniMazeAnimation';
 import { Link } from 'react-router-dom';
 
 const Path = () => {
@@ -58,17 +58,16 @@ const Path = () => {
 
         {/* Tarjeta 2 */}
         <Link to="/path-reinforcement-learning" className="flex-1">
-          <div className="h-full bg-[#020617] rounded-xl overflow-hidden shadow-2xl hover:shadow-[0_0_30px_rgba(101,220,184,0.3)] transition-all duration-300 hover:-translate-y-2 border border-[#46AA8C] hover:border-[#05F4F5]">
+          <div className="h-full bg-[#020617] rounded-xl overflow-hidden shadow-2xl 
+                          hover:shadow-[0_0_30px_rgba(101,220,184,0.3)] transition-all 
+                          duration-300 hover:-translate-y-2 border border-[#46AA8C] 
+                          hover:border-[#05F4F5]">
             <div className="h-48 bg-[#0f172a] flex items-center justify-center p-4">
-              <img
-                src={cerebroImg}
-                alt="Aprendizaje por refuerzo"
-                className="h-full object-contain opacity-80"
-              />
+              <MiniMazeAnimation />
             </div>
             <div className="p-8">
               <p className="text-lg text-white mb-4">
-                ¿Quieres saber cómo se entrenan los modelos?
+                ¿Quieres saber cómo <span className="font-bold text-[#6CDFBC]">se entrenan</span> los modelos?
               </p>
               <h3 className="text-3xl font-bold text-white">Aprendizaje por refuerzo</h3>
             </div>

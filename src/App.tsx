@@ -12,7 +12,7 @@ function App() {
     <Router>
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-1 pt-16"> {/* Compensa altura de la navbar fija */}
+        <main className="flex-1 pt-16">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/path" element={<Path />} />
