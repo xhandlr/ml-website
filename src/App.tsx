@@ -4,6 +4,7 @@ import Path from './pages/Path.tsx';
 import DecisionTree from './pages/DecisionTree.tsx';
 import DecisionTreeMenu from './pages/DecisionTreeMenu.tsx';
 import ReinforcementLearning from './pages/ReinforcementLearning.tsx';
+import ReinforcementLearningMenu from './pages/ReinforcementLearningMenu.tsx';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/path-decision-tree" element={<DecisionTree />} />
             <Route path="/decision-tree-menu" element={<DecisionTreeMenu />} />
             <Route path="/path-reinforcement-learning" element={<ReinforcementLearning />} />
+            <Route path="/ReinforcementLearningMenu" element={<ReinforcementLearningMenu />} />
           </Routes>
         </main>
       </div>

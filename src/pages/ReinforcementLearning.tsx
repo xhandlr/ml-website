@@ -16,146 +16,157 @@ type StepData = {
 };
 
 const steps: StepData[] = [
+  // Intro (manual part)
   {
-    text: "¡Hola! Soy un 'agente' y mi misión es aprender a navegar este 'entorno' para llegar al trofeo.",
-    thought: "Soy el agente, el que aprende.",
+    text: "¡Hola! Soy un 'agente', y mi misión es aprender a navegar este 'entorno' para llegar al trofeo.",
+    thought: "Soy el agente, la entidad que aprende.",
     position: 1,
     highlight: 'agent',
   },
   {
-    text: "El 'entorno' es todo el laberinto. Mi campo de juego.",
-    thought: "Este es mi mundo y sus reglas.",
+    text: "El 'entorno' es todo el laberinto. Cada casilla es un posible 'estado'.",
+    thought: "Este es mi mundo. Mi 'estado' actual es la casilla 1.",
     position: 1,
     highlight: 'environment',
   },
   {
-    text: "Mi 'estado' actual es mi ubicación. Ahora, en la casilla de inicio.",
-    thought: "¿Dónde estoy? Ese es mi estado.",
+    text: "Para moverme, tomo 'acciones'. Internamente, asigno un valor a cada acción posible (Q-Value). Al principio, todos los valores son cero.",
+    thought: "Aún no sé nada. ¿Qué acción es mejor aquí? Ni idea.",
     position: 1,
     highlight: 'state',
   },
+  // Start of auto-play: Bad path exploration
   {
-    text: "Para moverme, tomo una 'acción'. Empezaré a explorar para ver qué encuentro.",
-    thought: "¡Vamos a la aventura!",
+    text: "Empezaré a explorar para obtener información. ¡Vamos a la derecha!",
+    thought: "Acción: derecha. A ver qué pasa.",
     position: 2,
     highlight: 'action',
     action: 'right',
   },
   {
-    text: "Sigo explorando el mapa...",
-    thought: "A ver qué hay por aquí.",
+    text: "Continuaré explorando hacia abajo.",
+    thought: "Este camino parece libre.",
     position: 7,
     highlight: 'action',
     action: 'down',
   },
   {
-    text: "Este camino parece interesante, voy a continuar.",
+    text: "Sigo adentrándome en lo desconocido...",
     thought: "Espero que esto lleve a algo bueno.",
     position: 12,
     highlight: 'action',
     action: 'down',
   },
   {
-    text: "Un giro por aquí...",
-    thought: "Cambiando de dirección.",
+    text: "Ahora probaré a la derecha.",
+    thought: "Un giro por aquí.",
     position: 13,
     highlight: 'action',
     action: 'right',
   },
   {
-    text: "Y otro por acá.",
-    thought: "Veamos qué hay al final.",
+    text: "Llegando a una nueva bifurcación.",
+    thought: "A ver a dónde lleva esto.",
     position: 14,
     highlight: 'action',
     action: 'right',
   },
   {
-    text: "¡Uy! Esta zona no parece segura.",
-    thought: "Creo que me equivoqué de camino.",
+    text: "Probaré yendo hacia arriba.",
+    thought: "¡Uy! Esta zona no parece segura...",
     position: 9,
     highlight: 'action',
     action: 'up',
   },
   {
-    text: "¡Auch! Caer en el fuego me da una 'recompensa negativa'. He aprendido que este camino es malo.",
-    thought: "¡Error! Esto no lo repito.",
+    text: "¡Oh no! Una trampa de fuego. Esto es malo.",
+    thought: "Registrando una experiencia muy negativa en esta ruta.",
     position: 10,
     highlight: 'danger',
     feedback: '-1',
     action: 'right',
   },
+  // Pause and reflect (manual part)
   {
-    text: "Ahora que aprendí del error, vuelvo a empezar para encontrar la ruta correcta.",
-    thought: "Ok, a empezar de cero con más sabiduría.",
+    text: "¡Auch! Esa quemadura me dio una 'recompensa negativa'. Ahora sé que ese camino es malo y no debo repetirlo.",
+    thought: "Mi Q-Table se actualizó. El valor de esa ruta es bajísimo.",
     position: 1,
     highlight: 'agent',
   },
   {
-    text: "Probaré una ruta diferente, evitando el error anterior.",
-    thought: "Evitar el fuego, buscar el trofeo.",
+    text: "Mi objetivo es la recompensa final, pero las recompensas futuras valen un poco menos que las inmediatas. Esto se llama 'Factor de Descuento'.",
+    thought: "Prefiero un premio seguro ahora que uno incierto después.",
+    position: 1,
+    highlight: 'state',
+  },
+  // Restart and second attempt (good path)
+  {
+    text: "Ahora repetiré la ruta que me llevó al punto de decisión, usando mi memoria.",
+    thought: "Volviendo sobre mis pasos...",
     position: 2,
     highlight: 'action',
     action: 'right',
   },
   {
-    text: "Este camino parece más prometedor.",
-    thought: "Mucho mejor que el anterior.",
+    text: "Avanzando por el camino ya conocido...",
+    thought: "Manteniendo el curso.",
     position: 7,
     highlight: 'action',
     action: 'down',
   },
   {
-    text: "Continuo por la ruta segura.",
-    thought: "Manteniendo el curso.",
+    text: "Casi he llegado al punto crítico.",
+    thought: "Recordando la lección aprendida.",
     position: 12,
     highlight: 'action',
     action: 'down',
   },
   {
-    text: "Aquí es donde me desvié antes. Ahora tomaré el camino correcto.",
-    thought: "Aprendizaje en acción.",
+    text: "Continuo hacia la bifurcación.",
+    thought: "El momento de la verdad se acerca.",
     position: 13,
     highlight: 'action',
     action: 'right',
   },
   {
-    text: "Sigo avanzando por la nueva ruta.",
-    thought: "Esto se ve bien.",
+    text: "He llegado al punto donde me equivoqué.",
+    thought: "Ahora sé que 'arriba' es malo.",
     position: 14,
     highlight: 'action',
     action: 'right',
   },
   {
-    text: "Un giro hacia abajo, acercándome al objetivo.",
-    thought: "Casi lo tengo.",
+    text: "Mi Q-Table me dice que no vaya 'arriba'. Así que, basándome en mi aprendizaje, tomaré el camino 'abajo'.",
+    thought: "Aprendizaje en acción. Tomo la decisión correcta.",
     position: 19,
     highlight: 'action',
     action: 'down',
   },
   {
-    text: "¡Ya casi llego!",
-    thought: "¡Puedo sentir la victoria!",
+    text: "¡Este camino parece mucho más prometedor!",
+    thought: "¡Buena decisión! Esto se ve bien.",
     position: 24,
     highlight: 'action',
     action: 'down',
   },
+  // Final manual steps
   {
-    text: "¡Genial! Al llegar al trofeo, recibo una 'recompensa positiva'. ¡Este es el camino correcto!",
-    thought: "¡Lo logré! Este es el camino bueno.",
+    text: "¡Genial! Al llegar al trofeo, recibo una 'recompensa positiva'. ¡El valor de esta ruta aumenta muchísimo!",
+    thought: "¡Lo logré! Propagaré esta recompensa hacia atrás.",
     position: 25,
     highlight: 'reward',
     feedback: '+1',
     action: 'right',
   },
   {
-    text: "Tras aprender de mi error, he definido una 'política': la mejor ruta a seguir para ganar.",
-    thought: "¡Esta es mi estrategia ganadora!",
+    text: "Después de explorar, mi Q-Table está llena de valores. La 'Política' es mi estrategia final: la mejor acción en cada estado.",
+    thought: "¡Esta es mi chuleta! El mapa del tesoro que he creado.",
     position: 25,
     highlight: 'policy',
     path: [1, 2, 7, 12, 13, 14, 19, 24, 25],
   },
   {
-    text: "¡Excelente! Ahora que entiendes los conceptos, estás listo para el siguiente desafío.",
+    text: "¡Excelente! Ahora que entiendes los conceptos, estás listo para ver a un agente aprender por sí mismo.",
     thought: "¡A seguir aprendiendo!",
     position: 25,
     highlight: 'none',
@@ -165,6 +176,11 @@ const steps: StepData[] = [
 const ReinforcementLearning = () => {
   const [step, setStep] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  
+  const autoPlayStartIndex = 3;
+  const pauseIndex1 = 10; // After hitting the fire
+  const pauseIndex2 = 11; // After explaining the error
+  const endOfAutoPlayIndex = 19; // When it reaches the trophy
 
   const currentStepData = steps[step];
 
@@ -178,6 +194,17 @@ const ReinforcementLearning = () => {
     }
   }, [step, currentStepData.feedback]);
 
+  const isManualStep = step < autoPlayStartIndex || step === pauseIndex1 || step === pauseIndex2 || step >= endOfAutoPlayIndex;
+
+  useEffect(() => {
+    const isAutoPlay = !isManualStep && step < steps.length - 1;
+    if (isAutoPlay) {
+      const timerId = setInterval(() => {
+        setStep(prev => prev + 1);
+      }, 2500);
+      return () => clearInterval(timerId);
+    }
+  }, [step, isManualStep]);
 
   const nextStep = () => {
     if (step < steps.length - 1) setStep(step + 1);
@@ -214,30 +241,36 @@ const ReinforcementLearning = () => {
               <h2 className="text-base md:text-lg h-[160px] flex items-center justify-center">{currentStepData.text}</h2>
 
               <div className="mt-4 h-12 flex justify-center items-center gap-3">
-                {step > 0 && (
-                  <button
-                    onClick={prevStep}
-                    className="text-gray-400 border border-gray-600 px-4 py-1.5 rounded-md hover:border-gray-400 transition-all"
-                  >
-                    Anterior
-                  </button>
-                )}
-                {step < steps.length - 1 ? (
-                  <button
-                    onClick={nextStep}
-                    className="text-[#6CDFBC] border border-[#46AA8C] px-5 py-1.5 rounded-md
-                      hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
-                  >
-                    Siguiente
-                  </button>
-                ) : (
-                  <Link to="/reinforcement-learning-menu">
+                {isManualStep && step < steps.length - 1 && (
+                  <>
+                    {step > 0 && (
+                      <button
+                        onClick={prevStep}
+                        className="text-gray-400 border border-gray-600 px-4 py-1.5 rounded-md hover:border-gray-400 transition-all"
+                      >
+                        Anterior
+                      </button>
+                    )}
                     <button
+                      onClick={nextStep}
                       className="text-[#6CDFBC] border border-[#46AA8C] px-5 py-1.5 rounded-md
                         hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
                     >
-                      ¡Vamos!
+                      Siguiente
                     </button>
+                  </>
+                )}
+
+                {step === steps.length - 1 && (
+                  <Link to="/ReinforcementLearningMenu">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                      <button
+                        className="text-[#6CDFBC] border border-[#46AA8C] px-5 py-1.5 rounded-md
+                          hover:border-[#05F4F5] hover:text-[#05F4F5] transition-all duration-300 text-sm"
+                      >
+                        ¡Vamos!
+                      </button>
+                    </motion.div>
                   </Link>
                 )}
               </div>
