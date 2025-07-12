@@ -45,7 +45,6 @@ const GradeInputs: React.FC<GradeInputsProps> = ({
     <h2 className="text-xl font-semibold mb-6 text-[#6CDFBC]">Ingreso de Notas</h2>
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg mb-3">Notas de Pruebas (3)</h3>
         {grades.map((grade, index) => (
           <CustomSlider
             key={index}

@@ -6,10 +6,12 @@ interface InteractiveNodeProps {
   description?: string;
   descriptionPoints?: string[]; 
   clickText?: string;
-  titleColor?: string;       // Fondo del círculo
-  titleTextColor?: string;   // Color del texto dentro del botón
-  nodeSize?: number;         // Tamaño (width y height) del botón circular en px
+  titleColor?: string;
+  titleTextColor?: string;
+  nodeSize?: number;
   children?: ReactNode;
+  showClickText?: boolean;
+  onNodeToggle?: (isOpen: boolean) => void;
 }
 
 const InteractiveNode = ({
@@ -21,11 +23,20 @@ const InteractiveNode = ({
   titleTextColor = "#FFFFFF",
   nodeSize = 80,
   children,
+  showClickText = true,
+  onNodeToggle,
 }: InteractiveNodeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (onNodeToggle) {
+      onNodeToggle(isOpen);
+    }
+  }, [isOpen, onNodeToggle]);
+
+  // Efecto de scroll suave
   useEffect(() => {
     if (isOpen && containerRef.current) {
       const duration = 700;
@@ -70,7 +81,7 @@ const InteractiveNode = ({
           color: titleTextColor,
           width: nodeSize,
           height: nodeSize,
-          fontSize: nodeSize / 3, // tamaño relativo para texto
+          fontSize: nodeSize / 3,
           lineHeight: 1,
           userSelect: "none",
         }}
@@ -92,7 +103,11 @@ const InteractiveNode = ({
         {title || " "}
       </motion.button>
 
-      <p className="mt-3 text-white text-center max-w-xs select-none">{clickText}</p>
+      {showClickText && (
+        <p className="mt-3 text-white text-center max-w-xs select-none">
+          {clickText}
+        </p>
+      )}
 
       <AnimatePresence>
         {isOpen && (

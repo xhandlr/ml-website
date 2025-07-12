@@ -60,7 +60,7 @@ const DecisionTree = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#151C29] text-white flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-[#151C29] text-white flex items-start justify-center px-6 py-12">
       <div className="flex flex-col md:flex-row items-center gap-10 w-full max-w-6xl">
         <div className="relative flex flex-col items-center">
           <motion.div

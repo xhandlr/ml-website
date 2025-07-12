@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // Si no tienes esta lib, avísame y usamos emojis
+import { Menu, X } from "lucide-react";
+import robotLogo from "../assets/robot.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +9,7 @@ const Navbar = () => {
 
   const navLinks = [
     { path: "/", label: "Inicio" },
+    { path: "/path", label: "Ruta de Aprendizaje" },
     { path: "/decision-tree-menu", label: "Árboles de Decisión" },
     { path: "/reinforcement-learning", label: "Aprendizaje por Refuerzo" },
     { path: "/comparison", label: "Comparativa" },
@@ -17,7 +19,12 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full bg-[#0D111A] text-white shadow-md z-50 border-b border-[#358E8C]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo alineado a la izquierda */}
-        <h1 className="text-xl font-bold whitespace-nowrap">ML Interactivo</h1>
+        <Link to={"/"}>
+        <div className="flex items-center gap-2">
+          <img src={robotLogo} alt="Logo" className="w-6 h-6" />
+          <h1 className="text-xl font-bold whitespace-nowrap">ML Interactivo</h1>
+        </div>
+        </Link>
 
         {/* Desktop nav centrado */}
         <ul className="hidden md:flex gap-8 mx-auto">
