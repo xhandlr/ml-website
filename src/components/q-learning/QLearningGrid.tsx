@@ -19,9 +19,10 @@ interface GridProps {
   agentPosition: { x: number; y: number };
   qTable: { [state: string]: number[] };
   lastActionInfo: { state: string; action: number; optimal: boolean } | null;
+  pathHistory: { x: number; y: number }[];
 }
 
-const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastActionInfo }) => {
+const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastActionInfo, pathHistory }) => {
   const ref = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -72,6 +73,22 @@ const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastA
       .attr('stroke-width', 3) // Thicker border
       .attr('rx', 5) // Rounded corners
       .attr('ry', 5);
+
+    // --- Draw Path History ---
+    const pathData = pathHistory.map((pos, i) => ({ ...pos, id: `path-${i}` }));
+    svg.selectAll<SVGPathElement, { id: string; x: number; y: number; }>('.path-arrow')
+      .data(pathData, (d) => d.id)
+      .join('path')
+      .attr('class', 'path-arrow')
+      .attr('d', `M${cellSize*0.5},${cellSize*0.3} L${cellSize*0.5},${cellSize*0.7} L${cellSize*0.7},${cellSize*0.5} Z`)
+      .attr('fill', '#f59e0b') // Amber-500 for path
+      .style('opacity', 0.5)
+      .attr('transform', (d, i) => {
+        if (i === 0) return 'scale(0)';
+        const prevPos = pathHistory[i-1];
+        const angle = Math.atan2(d.y - prevPos.y, d.x - prevPos.x) * 180 / Math.PI;
+        return `translate(${prevPos.x * cellSize}, ${prevPos.y * cellSize}) rotate(${angle}, ${cellSize/2}, ${cellSize/2})`;
+      });
 
     // --- Draw Icons ---
     svg.selectAll('.icon').data([]).exit().remove(); // Clear old icons
@@ -147,9 +164,10 @@ const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastA
     agentGroup.merge(agentEnter)
       .transition()
       .duration(100)
-      .attr('transform', d => `translate(${(d.x + 0.5) * cellSize}, ${(d.y + 0.5) * cellSize})`);
+      .attr('transform', d => `translate(${(d.x + 0.5) * cellSize}, ${(d.y + 0.5) * cellSize})`)
+      .style('z-index', 100);
 
-  }, [grid, agentPosition, qTable, lastActionInfo]);
+  }, [grid, agentPosition, qTable, lastActionInfo, pathHistory]);
 
   return (
     <div className="bg-[#0f172a] p-2 rounded-lg shadow-2xl aspect-square max-w-full">

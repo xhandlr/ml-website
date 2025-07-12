@@ -9,14 +9,12 @@ interface QLearningControlsProps {
   onReset: () => void;
   onLearningRateChange: (value: number) => void;
   onDiscountFactorChange: (value: number) => void;
-  onPresetChange: (preset: 'slow' | 'fast' | 'explorer' | 'exploiter' | 'balanced' | 'custom') => void;
+  onPresetChange: (preset: 'slow' | 'fast' | 'explorer' | 'exploiter' | 'balanced' | 'optimal') => void;
   episode: number;
   steps: number;
   learningRate: number;
   discountFactor: number;
   explorationRate: number;
-  isCustomMode: boolean;
-  setCustomMode: (isCustom: boolean) => void;
 }
 
 const ParameterSlider: React.FC<{
@@ -61,7 +59,6 @@ const QLearningControls: React.FC<QLearningControlsProps> = ({
   learningRate,
   discountFactor,
   explorationRate,
-  isCustomMode
 }) => {
   return (
     <div className="bg-[#1e293b] p-6 rounded-2xl shadow-2xl h-full flex flex-col text-white">
@@ -138,11 +135,11 @@ const QLearningControls: React.FC<QLearningControlsProps> = ({
           </Button>
           <Button
             block
-            onClick={() => onPresetChange('custom')}
-            className="bg-gray-700 hover:bg-gray-800 border-gray-700 hover:border-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200"
+            onClick={() => onPresetChange('optimal')}
+            className="bg-yellow-500 hover:bg-yellow-600 border-yellow-500 hover:border-yellow-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 col-span-2"
             style={{ height: 'auto' }}
           >
-            Personalizado
+            Óptimo
           </Button>
         </Space>
       </div>
@@ -155,7 +152,6 @@ const QLearningControls: React.FC<QLearningControlsProps> = ({
           value={learningRate}
           onChange={onLearningRateChange}
           min={0.1} max={1} step={0.1}
-          disabled={!isCustomMode}
         />
         <ParameterSlider
           label="Factor de Descuento (γ)"
@@ -163,7 +159,6 @@ const QLearningControls: React.FC<QLearningControlsProps> = ({
           value={discountFactor}
           onChange={onDiscountFactorChange}
           min={0.1} max={0.99} step={0.01}
-          disabled={!isCustomMode}
         />
         <ParameterSlider
           label="Tasa de Exploración (ε)"

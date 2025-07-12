@@ -36,9 +36,11 @@ initialGrid[6][2] = CELL_TYPES.WALL;
 initialGrid[6][3] = CELL_TYPES.WALL;
 
 const START_POS = { x: 0, y: 0 };
+const REWARD_POS = { x: 7, y: 7 };
 
 // --- Helper Functions ---
 const posToState = (pos: { x: number; y: number }) => `${pos.y},${pos.x}`;
+const manhattanDistance = (a: {x: number, y: number}, b: {x: number, y: number}) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 
 const useQLearning = () => {
   const [grid] = useState(initialGrid);
@@ -47,15 +49,17 @@ const useQLearning = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [episode, setEpisode] = useState(0);
   const [steps, setSteps] = useState(0);
-  const [isCustomMode, setIsCustomMode] = useState(false);
+  const [pathHistory, setPathHistory] = useState<{x: number, y: number}[]>([]);
 
   // Hyperparameters
-  const learningRate = useRef(0.1);
-  const discountFactor = useRef(0.9);
+  const [learningRate, setLearningRate] = useState(0.8); // Start with a high learning rate
+  const [discountFactor, setDiscountFactor] = useState(0.9);
   const explorationRate = useRef(1.0);
   const maxExplorationRate = 1.0;
   const minExplorationRate = 0.01;
-  const explorationDecayRate = 0.001;
+  const explorationDecayRate = 0.01; // More aggressive decay
+  const minLearningRate = 0.1;
+  const learningRateDecay = 0.001;
 
   const simulationInterval = useRef<number | null>(null);
 
@@ -88,19 +92,30 @@ const useQLearning = () => {
       return { nextPos: agentPosition, reward: REWARDS[CELL_TYPES.WALL] };
     }
 
-    return { nextPos, reward: REWARDS[cellType] };
+    // Reward Shaping
+    const currentDist = manhattanDistance(agentPosition, REWARD_POS);
+    const nextDist = manhattanDistance(nextPos, REWARD_POS);
+    
+    let shapedReward = REWARDS[cellType];
+    if (nextDist < currentDist) {
+      shapedReward += 0.5; // Small reward for getting closer
+    } else if (nextDist > currentDist) {
+      shapedReward -= 0.2; // Small penalty for moving away
+    }
+
+    return { nextPos, reward: shapedReward };
   }, [agentPosition, grid]);
 
   const updateQValue = useCallback((state: string, action: number, reward: number, nextState: string) => {
     const oldQ = getQ(state)[action];
     const nextMaxQ = Math.max(...getQ(nextState));
-    const newQ = oldQ + learningRate.current * (reward + discountFactor.current * nextMaxQ - oldQ);
+    const newQ = oldQ + learningRate * (reward + discountFactor * nextMaxQ - oldQ);
 
     setQTable(prev => ({
       ...prev,
       [state]: Object.assign([...(prev[state] || [0,0,0,0])], { [action]: newQ }),
     }));
-  }, [getQ]);
+  }, [getQ, learningRate, discountFactor]);
 
   const [lastActionInfo, setLastActionInfo] = useState<{ state: string, action: number, optimal: boolean } | null>(null);
 
@@ -118,6 +133,7 @@ const useQLearning = () => {
     updateQValue(currentState, action, reward, nextState);
     setAgentPosition(nextPos);
     setSteps(prev => prev + 1);
+    setPathHistory(prev => [...prev, nextPos]);
 
     setLastActionInfo({ state: currentState, action, optimal: isOptimal });
 
@@ -125,14 +141,22 @@ const useQLearning = () => {
     if (nextCellType === CELL_TYPES.REWARD || nextCellType === CELL_TYPES.DANGER) {
       // End of episode
       setAgentPosition(START_POS);
-      setEpisode(prev => prev + 1);
+      const newEpisode = episode + 1;
+      setEpisode(newEpisode);
       setSteps(0);
+      setPathHistory([]);
+
       // Decay exploration rate
       explorationRate.current = minExplorationRate + 
-        (maxExplorationRate - minExplorationRate) * Math.exp(-explorationDecayRate * (episode + 1));
+        (maxExplorationRate - minExplorationRate) * Math.exp(-explorationDecayRate * newEpisode);
+      
+      // Decay learning rate
+      const newLearningRate = Math.max(minLearningRate, learningRate * (1 - learningRateDecay));
+      setLearningRate(newLearningRate);
+
       setLastActionInfo(null); // Clear last action info at episode end
     }
-  }, [agentPosition, chooseAction, grid, getQ, episode, takeAction, updateQValue]);
+  }, [agentPosition, chooseAction, grid, getQ, episode, takeAction, updateQValue, learningRate]);
 
   // --- Simulation Control ---
 
@@ -160,44 +184,42 @@ const useQLearning = () => {
     setSteps(0);
     setAgentPosition(START_POS);
     setQTable({});
+    setPathHistory([]);
     explorationRate.current = maxExplorationRate;
   }, []);
 
-  const applyPreset = useCallback((preset: 'slow' | 'fast' | 'explorer' | 'exploiter' | 'balanced' | 'custom') => {
+  const applyPreset: (preset: 'slow' | 'fast' | 'explorer' | 'exploiter' | 'balanced' | 'optimal') => void = useCallback((preset) => {
     handleReset();
     switch (preset) {
       case 'slow':
-        learningRate.current = 0.1;
-        discountFactor.current = 0.9;
+        setLearningRate(0.1);
+        setDiscountFactor(0.9);
         explorationRate.current = 0.7;
-        setIsCustomMode(false);
         break;
       case 'fast':
-        learningRate.current = 0.8;
-        discountFactor.current = 0.5;
+        setLearningRate(0.8);
+        setDiscountFactor(0.5);
         explorationRate.current = 1.0;
-        setIsCustomMode(false);
         break;
       case 'explorer':
-        learningRate.current = 0.3;
-        discountFactor.current = 0.7;
+        setLearningRate(0.3);
+        setDiscountFactor(0.7);
         explorationRate.current = 0.9;
-        setIsCustomMode(false);
         break;
       case 'exploiter':
-        learningRate.current = 0.2;
-        discountFactor.current = 0.95;
+        setLearningRate(0.2);
+        setDiscountFactor(0.95);
         explorationRate.current = 0.1;
-        setIsCustomMode(false);
         break;
       case 'balanced':
-        learningRate.current = 0.5;
-        discountFactor.current = 0.8;
+        setLearningRate(0.5);
+        setDiscountFactor(0.8);
         explorationRate.current = 0.5;
-        setIsCustomMode(false);
         break;
-      case 'custom':
-        setIsCustomMode(true);
+      case 'optimal':
+        setLearningRate(0.8);
+        setDiscountFactor(0.95);
+        explorationRate.current = 1.0;
         break;
     }
   }, [handleReset]);
@@ -209,18 +231,17 @@ const useQLearning = () => {
     isRunning,
     episode,
     steps,
-    learningRate: learningRate.current,
-    discountFactor: discountFactor.current,
+    learningRate,
+    discountFactor,
     explorationRate: explorationRate.current,
     handleStart,
     handlePause,
     handleReset,
-    setLearningRate: (rate: number) => { learningRate.current = rate; },
-    setDiscountFactor: (factor: number) => { discountFactor.current = factor; },
+    setLearningRate,
+    setDiscountFactor,
     applyPreset,
     lastActionInfo,
-    isCustomMode,
-    setCustomMode: setIsCustomMode,
+    pathHistory,
   };
 };
 

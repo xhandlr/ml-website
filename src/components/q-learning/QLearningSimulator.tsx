@@ -21,14 +21,13 @@ const QLearningSimulator: React.FC = () => {
     setDiscountFactor,
     applyPreset,
     lastActionInfo,
-    isCustomMode,
-    setCustomMode,
+    pathHistory,
   } = useQLearning();
 
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
       <div className="lg:w-2/3">
-        <QLearningGrid grid={grid} agentPosition={agentPosition} qTable={qTable} lastActionInfo={lastActionInfo} />
+        <QLearningGrid grid={grid} agentPosition={agentPosition} qTable={qTable} lastActionInfo={lastActionInfo} pathHistory={pathHistory} />
       </div>
       <div className="lg:w-1/3">
         <QLearningControls
@@ -44,8 +43,6 @@ const QLearningSimulator: React.FC = () => {
           learningRate={learningRate}
           discountFactor={discountFactor}
           explorationRate={explorationRate}
-          isCustomMode={isCustomMode}
-          setCustomMode={setCustomMode}
         />
       </div>
     </div>
