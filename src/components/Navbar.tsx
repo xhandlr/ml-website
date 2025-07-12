@@ -10,7 +10,7 @@ const Navbar = () => {
     { path: "/", label: "Inicio" },
     { path: "/decision-tree-menu", label: "Árboles de Decisión" },
     { path: "/reinforcement-learning", label: "Aprendizaje por Refuerzo" },
-    { path: "/comparative", label: "Comparativa" },
+    { path: "/comparison", label: "Comparativa" },
   ];
 
   return (
