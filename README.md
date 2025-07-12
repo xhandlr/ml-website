@@ -65,7 +65,7 @@ Sigue estos pasos para poner en marcha el proyecto en tu máquina local:
     ```
 
 5.  **Abrir en el Navegador:**
-    Una vez que el servidor esté en funcionamiento (verás un mensaje en la terminal indicando la URL), abre tu navegador web (Chrome, Firefox, Edge, etc.) y visita la siguiente direcci��n:
+    Una vez que el servidor esté en funcionamiento (verás un mensaje en la terminal indicando la URL), abre tu navegador web (Chrome, Firefox, Edge, etc.) y visita la siguiente dirección:
     ```
     http://localhost:5173
     ```
