@@ -24,12 +24,16 @@ initialGrid[7][7] = CELL_TYPES.REWARD;
 initialGrid[5][5] = CELL_TYPES.DANGER;
 initialGrid[3][4] = CELL_TYPES.DANGER;
 // Walls
-for (let i = 0; i < 5; i++) initialGrid[2][i] = CELL_TYPES.WALL;
-for (let i = 4; i < 8; i++) initialGrid[5][i] = CELL_TYPES.WALL;
-initialGrid[5][5] = CELL_TYPES.DANGER; // Overwrite wall with danger
+initialGrid[1][1] = CELL_TYPES.WALL;
+initialGrid[1][2] = CELL_TYPES.WALL;
+initialGrid[1][3] = CELL_TYPES.WALL;
+initialGrid[2][3] = CELL_TYPES.WALL;
 initialGrid[3][3] = CELL_TYPES.WALL;
-initialGrid[4][3] = CELL_TYPES.WALL;
-initialGrid[5][3] = CELL_TYPES.WALL;
+initialGrid[4][1] = CELL_TYPES.WALL;
+initialGrid[5][1] = CELL_TYPES.WALL;
+initialGrid[6][1] = CELL_TYPES.WALL;
+initialGrid[6][2] = CELL_TYPES.WALL;
+initialGrid[6][3] = CELL_TYPES.WALL;
 
 const START_POS = { x: 0, y: 0 };
 
@@ -43,6 +47,7 @@ const useQLearning = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [episode, setEpisode] = useState(0);
   const [steps, setSteps] = useState(0);
+  const [isCustomMode, setIsCustomMode] = useState(false);
 
   // Hyperparameters
   const learningRate = useRef(0.1);
@@ -69,7 +74,7 @@ const useQLearning = () => {
     }
   }, [getQ]);
 
-  const takeAction = (action: number) => {
+  const takeAction = useCallback((action: number) => {
     const vector = ACTION_VECTORS[action];
     const nextPos = { x: agentPosition.x + vector.x, y: agentPosition.y + vector.y };
 
@@ -84,9 +89,9 @@ const useQLearning = () => {
     }
 
     return { nextPos, reward: REWARDS[cellType] };
-  };
+  }, [agentPosition, grid]);
 
-  const updateQValue = (state: string, action: number, reward: number, nextState: string) => {
+  const updateQValue = useCallback((state: string, action: number, reward: number, nextState: string) => {
     const oldQ = getQ(state)[action];
     const nextMaxQ = Math.max(...getQ(nextState));
     const newQ = oldQ + learningRate.current * (reward + discountFactor.current * nextMaxQ - oldQ);
@@ -95,7 +100,7 @@ const useQLearning = () => {
       ...prev,
       [state]: Object.assign([...(prev[state] || [0,0,0,0])], { [action]: newQ }),
     }));
-  };
+  }, [getQ]);
 
   const [lastActionInfo, setLastActionInfo] = useState<{ state: string, action: number, optimal: boolean } | null>(null);
 
@@ -127,7 +132,7 @@ const useQLearning = () => {
         (maxExplorationRate - minExplorationRate) * Math.exp(-explorationDecayRate * (episode + 1));
       setLastActionInfo(null); // Clear last action info at episode end
     }
-  }, [agentPosition, chooseAction, grid, getQ, episode]);
+  }, [agentPosition, chooseAction, grid, getQ, episode, takeAction, updateQValue]);
 
   // --- Simulation Control ---
 
@@ -158,16 +163,42 @@ const useQLearning = () => {
     explorationRate.current = maxExplorationRate;
   }, []);
 
-  const applyPreset = useCallback((preset: 'slow' | 'fast') => {
+  const applyPreset = useCallback((preset: 'slow' | 'fast' | 'explorer' | 'exploiter' | 'balanced' | 'custom') => {
     handleReset();
-    if (preset === 'slow') {
-      learningRate.current = 0.1;
-      discountFactor.current = 0.9;
-      explorationRate.current = 0.7;
-    } else { // fast
-      learningRate.current = 0.8;
-      discountFactor.current = 0.5;
-      explorationRate.current = 1.0;
+    switch (preset) {
+      case 'slow':
+        learningRate.current = 0.1;
+        discountFactor.current = 0.9;
+        explorationRate.current = 0.7;
+        setIsCustomMode(false);
+        break;
+      case 'fast':
+        learningRate.current = 0.8;
+        discountFactor.current = 0.5;
+        explorationRate.current = 1.0;
+        setIsCustomMode(false);
+        break;
+      case 'explorer':
+        learningRate.current = 0.3;
+        discountFactor.current = 0.7;
+        explorationRate.current = 0.9;
+        setIsCustomMode(false);
+        break;
+      case 'exploiter':
+        learningRate.current = 0.2;
+        discountFactor.current = 0.95;
+        explorationRate.current = 0.1;
+        setIsCustomMode(false);
+        break;
+      case 'balanced':
+        learningRate.current = 0.5;
+        discountFactor.current = 0.8;
+        explorationRate.current = 0.5;
+        setIsCustomMode(false);
+        break;
+      case 'custom':
+        setIsCustomMode(true);
+        break;
     }
   }, [handleReset]);
 
@@ -188,6 +219,8 @@ const useQLearning = () => {
     setDiscountFactor: (factor: number) => { discountFactor.current = factor; },
     applyPreset,
     lastActionInfo,
+    isCustomMode,
+    setCustomMode: setIsCustomMode,
   };
 };
 

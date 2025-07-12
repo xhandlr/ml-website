@@ -58,8 +58,9 @@ const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastA
     const flatGrid = grid.flatMap((row, y) => row.map((cell, x) => ({ id: `${y}-${x}`, x, y, type: cell })));
 
     // --- Draw Cells ---
-    svg.selectAll('.cell')
-      .data(flatGrid, (d: any) => d.id)
+    interface CellData { id: string; x: number; y: number; type: number; }
+    svg.selectAll<SVGRectElement, CellData>('.cell')
+      .data(flatGrid, (d: CellData) => d.id)
       .join('rect')
       .attr('class', 'cell')
       .attr('x', d => d.x * cellSize)
@@ -94,8 +95,14 @@ const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastA
     const qValues = qData.flatMap(d => d.values);
     const qScale = d3.scaleLinear().domain([d3.min(qValues) || 0, d3.max(qValues) || 0]).range([0.2, 1]); // Adjusted range for better visibility
 
-    svg.selectAll('.policy-arrow')
-      .data(qData, (d: any) => d.id)
+    interface QData {
+      id: string;
+      x: number;
+      y: number;
+      values: number[];
+    }
+    svg.selectAll<SVGPathElement, QData>('.policy-arrow')
+      .data(qData, (d: QData) => d.id)
       .join(
         enter => enter.append('path').attr('class', 'policy-arrow').style('opacity', 0),
         update => update,
@@ -137,7 +144,7 @@ const QLearningGrid: React.FC<GridProps> = ({ grid, agentPosition, qTable, lastA
       .attr('font-size', cellSize * 0.4)
       .text('🤖');
 
-    agentGroup.merge(agentEnter as any)
+    agentGroup.merge(agentEnter)
       .transition()
       .duration(100)
       .attr('transform', d => `translate(${(d.x + 0.5) * cellSize}, ${(d.y + 0.5) * cellSize})`);

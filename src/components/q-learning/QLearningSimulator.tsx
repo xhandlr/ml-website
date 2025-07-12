@@ -21,6 +21,8 @@ const QLearningSimulator: React.FC = () => {
     setDiscountFactor,
     applyPreset,
     lastActionInfo,
+    isCustomMode,
+    setCustomMode,
   } = useQLearning();
 
   return (
@@ -42,6 +44,8 @@ const QLearningSimulator: React.FC = () => {
           learningRate={learningRate}
           discountFactor={discountFactor}
           explorationRate={explorationRate}
+          isCustomMode={isCustomMode}
+          setCustomMode={setCustomMode}
         />
       </div>
     </div>

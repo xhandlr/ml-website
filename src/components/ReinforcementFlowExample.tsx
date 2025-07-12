@@ -17,6 +17,13 @@ interface StepData {
   action?: 'up' | 'down' | 'left' | 'right';
 }
 
+// Add new props to ReinforcementFlowExample
+interface ReinforcementFlowExampleProps {
+  stepData: StepData;
+  jumpToPosition: number | null;
+  setJumpToPosition: (pos: number | null) => void;
+}
+
 function usePrevious<T>(value: T): T | undefined {
   const ref = useRef<T>(undefined);
   useEffect(() => {
@@ -25,7 +32,7 @@ function usePrevious<T>(value: T): T | undefined {
   return ref.current;
 }
 
-const ReinforcementFlowExample: React.FC<{ stepData: StepData }> = ({ stepData }) => {
+const ReinforcementFlowExample: React.FC<ReinforcementFlowExampleProps> = ({ stepData, jumpToPosition, setJumpToPosition }) => {
   const ref = useRef<SVGSVGElement>(null);
   const prevStepData = usePrevious(stepData);
 
@@ -120,14 +127,27 @@ const ReinforcementFlowExample: React.FC<{ stepData: StepData }> = ({ stepData }
       .text(d => d.content);
 
     // Robot
-    const currentPos = stepData.position;
-    const previousPos = prevStepData?.position || currentPos;
+    const currentPos = stepData.position; // Moved declaration here
+    let initialX, initialY;
+    let targetX, targetY;
 
-    const initialX = ((previousPos - 1) % cols) * (cellSize + gap);
-    const initialY = Math.floor((previousPos - 1) / cols) * (cellSize + gap);
-    
-    const targetX = ((currentPos - 1) % cols) * (cellSize + gap);
-    const targetY = Math.floor((currentPos - 1) / cols) * (cellSize + gap);
+    if (jumpToPosition !== null) {
+      // If skipping, immediately set position without transition
+      const jumpPosCoords = gridLayout.find(cell => cell.id === jumpToPosition)!;
+      targetX = ((jumpPosCoords.id - 1) % cols) * (cellSize + gap);
+      targetY = Math.floor((jumpPosCoords.id - 1) / cols) * (cellSize + gap);
+      initialX = targetX; // Start and end at the same position
+      initialY = targetY;
+      setJumpToPosition(null); // Clear the jump flag
+    } else {
+      // Normal animation
+      const previousPos = prevStepData?.position || currentPos;
+      initialX = ((previousPos - 1) % cols) * (cellSize + gap);
+      initialY = Math.floor((previousPos - 1) / cols) * (cellSize + gap);
+      
+      targetX = ((currentPos - 1) % cols) * (cellSize + gap);
+      targetY = Math.floor((currentPos - 1) / cols) * (cellSize + gap);
+    }
 
     const robot = g.append('g')
       .attr('transform', `translate(${initialX}, ${initialY})`)
@@ -149,11 +169,18 @@ const ReinforcementFlowExample: React.FC<{ stepData: StepData }> = ({ stepData }
       .attr('font-size', '24px')
       .text('🤖');
 
-    d3.select<d3.BaseType, unknown>('#robot')
-      .transition()
-      .duration(800)
-      .ease(d3.easeCubicOut)
-      .attr('transform', `translate(${targetX}, ${targetY})`);
+    // Only apply transition if not jumping
+    if (jumpToPosition === null) {
+      d3.select<d3.BaseType, unknown>('#robot')
+        .transition()
+        .duration(800)
+        .ease(d3.easeCubicOut)
+        .attr('transform', `translate(${targetX}, ${targetY})`);
+    } else {
+      // If jumping, ensure robot is immediately at target position
+      d3.select<d3.BaseType, unknown>('#robot')
+        .attr('transform', `translate(${targetX}, ${targetY})`);
+    }
 
     // Flecha de acción
     if (stepData.highlight === 'action' && prevStepData && prevStepData.position !== currentPos) {
@@ -204,7 +231,7 @@ const ReinforcementFlowExample: React.FC<{ stepData: StepData }> = ({ stepData }
     if (stepData.feedback === '+1') showFeedback('+1', '#4ade80');
     if (stepData.feedback === '-1') showFeedback('-1', '#f87171');
 
-  }, [stepData]);
+  }, [stepData, prevStepData, jumpToPosition, setJumpToPosition]);
 
   return (
     <div className="w-full max-w-md p-4 bg-[#0f172a] rounded-2xl shadow-2xl flex flex-col items-center">

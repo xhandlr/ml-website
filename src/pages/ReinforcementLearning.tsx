@@ -176,6 +176,7 @@ const steps: StepData[] = [
 const ReinforcementLearning = () => {
   const [step, setStep] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [jumpToPosition, setJumpToPosition] = useState<number | null>(null);
   
   const autoPlayStartIndex = 3;
   const pauseIndex1 = 10; // After hitting the fire
@@ -213,6 +214,21 @@ const ReinforcementLearning = () => {
   const prevStep = () => {
     if (step > 0) setStep(step - 1);
   };
+
+  const handleSkip = () => {
+    if (step >= autoPlayStartIndex && step < pauseIndex1) {
+      // Skipping to fire
+      setStep(pauseIndex1);
+    } else if (step > pauseIndex2 && step < endOfAutoPlayIndex) {
+      // Skipping to trophy
+      setStep(endOfAutoPlayIndex);
+    }
+  };
+
+  const showSkipButton = !isManualStep && (
+    (step >= autoPlayStartIndex && step < pauseIndex1) ||
+    (step > pauseIndex2 && step < endOfAutoPlayIndex)
+  );
 
   return (
     <div className="min-h-screen bg-[#151C29] text-white flex items-center justify-center px-6 py-12 overflow-hidden">
@@ -260,6 +276,14 @@ const ReinforcementLearning = () => {
                     </button>
                   </>
                 )}
+                {showSkipButton && (
+                  <button
+                    onClick={handleSkip}
+                    className="text-yellow-400 border border-yellow-600 px-4 py-1.5 rounded-md hover:border-yellow-400 transition-all text-sm"
+                  >
+                    Omitir
+                  </button>
+                )}
 
                 {step === steps.length - 1 && (
                   <Link to="/ReinforcementLearningMenu">
@@ -293,7 +317,7 @@ const ReinforcementLearning = () => {
             transition={{ duration: 0.5 }}
             className="w-full h-full flex items-center justify-center"
           >
-            <ReinforcementFlowExample stepData={currentStepData} />
+            <ReinforcementFlowExample stepData={currentStepData} jumpToPosition={jumpToPosition} setJumpToPosition={setJumpToPosition} />
           </motion.div>
           
           <div className="flex justify-center mt-4">
