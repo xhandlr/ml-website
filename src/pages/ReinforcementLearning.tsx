@@ -286,7 +286,7 @@ const ReinforcementLearning = () => {
                 )}
 
                 {step === steps.length - 1 && (
-                  <Link to="/ReinforcementLearningMenu">
+                  <Link to="/reinforcement-learning">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
                       <button
                         className="text-[#6CDFBC] border border-[#46AA8C] px-5 py-1.5 rounded-md

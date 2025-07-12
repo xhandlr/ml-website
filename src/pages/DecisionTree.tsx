@@ -59,9 +59,13 @@ const DecisionTree = () => {
     if (step < steps.length - 1) setStep(step + 1);
   };
 
+  const prevStep = () => {
+    if (step > 0) setStep(step - 1);
+  };
+
   return (
     <div className="min-h-screen bg-[#151C29] text-white flex items-start justify-center px-6 py-12">
-      <div className="flex flex-col md:flex-row items-center gap-10 w-full max-w-6xl">
+      <div className="flex flex-col md:flex-row items-center gap-10 w-full max-w-6xl mt-4">
         <div className="relative flex flex-col items-center">
           <motion.div
             initial={step === 0 ? { opacity: 0, y: 20 } : false}
@@ -74,7 +78,16 @@ const DecisionTree = () => {
             <div className="text-4xl mb-3">{steps[step].img}</div>
             <h2 className="text-base md:text-lg">{steps[step].text}</h2>
 
-            <div className="mt-4">
+            <div className="mt-4 flex justify-center gap-4">
+              {step > 0 && (
+                <button
+                  onClick={prevStep}
+                  className="text-gray-400 border border-gray-600 px-4 py-1.5 rounded-md hover:border-gray-400 hover:text-gray-300 transition-all"
+                >
+                  Anterior
+                </button>
+              )}
+
               {step < steps.length - 1 ? (
                 <button
                   onClick={nextStep}
