@@ -1,5 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import * as d3 from 'd3';
+
+interface CellLayout {
+  id: number;
+  type: string;
+}
 
 const MiniMazeAnimation = () => {
   const ref = useRef<SVGSVGElement>(null);
@@ -11,7 +16,7 @@ const MiniMazeAnimation = () => {
   const width = cols * (cellSize + gap) - gap;
   const height = rows * (cellSize + gap) - gap;
 
-  const layout = [
+  const layout = useMemo(() => [
     { id: 0, type: 'start' },
     { id: 1, type: 'empty' },
     { id: 2, type: 'wall' },
@@ -21,9 +26,9 @@ const MiniMazeAnimation = () => {
     { id: 6, type: 'wall' },
     { id: 7, type: 'empty' },
     { id: 8, type: 'goal' },
-  ];
+  ], []);
 
-  const path = [0, 1, 4, 5, 8];
+  const path = useMemo(() => [0, 1, 4, 5, 8], []);
   const delayAfterFinish = 3000;
   const stepDuration = 500;
 
@@ -35,30 +40,30 @@ const MiniMazeAnimation = () => {
     const g = svg.append('g');
 
     // Render grid
-    g.selectAll('rect')
+    g.selectAll<SVGRectElement, CellLayout>('rect')
       .data(layout)
       .enter()
       .append('rect')
-      .attr('x', d => (d.id % cols) * (cellSize + gap))
-      .attr('y', d => Math.floor(d.id / cols) * (cellSize + gap))
+      .attr('x', (d: CellLayout) => (d.id % cols) * (cellSize + gap))
+      .attr('y', (d: CellLayout) => Math.floor(d.id / cols) * (cellSize + gap))
       .attr('width', cellSize)
       .attr('height', cellSize)
       .attr('rx', 5)
-      .attr('fill', d => {
+      .attr('fill', (d: CellLayout) => {
         if (d.type === 'wall') return '#334155';
         if (d.type === 'start') return '#3b82f680';
         if (d.type === 'goal') return '#22c55e80';
         return '#1e293b';
       })
-      .attr('stroke', d => path.includes(d.id) ? '#65DCB8' : 'none')
+      .attr('stroke', (d: CellLayout) => path.includes(d.id) ? '#65DCB8' : 'none')
       .attr('stroke-width', 2);
 
     // Draw path
     const pathLine = d3.line<{ id: number }>()
-      .x(d => (d.id % cols) * (cellSize + gap) + cellSize / 2)
-      .y(d => Math.floor(d.id / cols) * (cellSize + gap) + cellSize / 2);
+      .x((d: { id: number }) => (d.id % cols) * (cellSize + gap) + cellSize / 2)
+      .y((d: { id: number }) => Math.floor(d.id / cols) * (cellSize + gap) + cellSize / 2);
 
-    const pathCoords = path.map(id => layout.find(cell => cell.id === id)!);
+    const pathCoords = path.map((id: number) => layout.find((cell: CellLayout) => cell.id === id)!);
 
     g.append('path')
       .datum(pathCoords)
@@ -75,7 +80,7 @@ const MiniMazeAnimation = () => {
       .attr('fill', '#3b82f6');
 
     const moveAgent = () => {
-      path.forEach((id, i) => {
+      path.forEach((id: number, i: number) => {
         const x = (id % cols) * (cellSize + gap) + cellSize / 2;
         const y = Math.floor(id / cols) * (cellSize + gap) + cellSize / 2;
 
@@ -106,7 +111,7 @@ const MiniMazeAnimation = () => {
     agent.attr('cx', startX).attr('cy', startY);
 
     moveAgent();
-  }, []);
+  }, [layout, path]);
 
   return (
     <div className="relative w-[260px] h-[180px] bg-transparent rounded-md flex items-center justify-center">
