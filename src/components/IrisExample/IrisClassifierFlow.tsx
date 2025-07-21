@@ -77,7 +77,6 @@ const IrisClassifierFlow: React.FC = () => {
       <ResultModal
         show={!!modalMessage}
         message={modalMessage}
-        showConfetti={false} 
         onClose={resetEvaluation}
       />
     </>

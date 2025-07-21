@@ -76,9 +76,9 @@ const DecisionTree = () => {
             <div className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 w-0 h-0 
               border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#1e293b]" />
             <div className="text-4xl mb-3">{steps[step].img}</div>
-            <h2 className="text-base md:text-lg">{steps[step].text}</h2>
+            <h2 className="text-base md:text-lg h-[160px] flex items-center justify-center">{steps[step].text}</h2>
 
-            <div className="mt-4 flex justify-center gap-4">
+            <div className="mt-4 flex justify-center gap-4"> 
               {step > 0 && (
                 <button
                   onClick={prevStep}
