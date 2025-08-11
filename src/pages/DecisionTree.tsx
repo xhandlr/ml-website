@@ -67,18 +67,16 @@ const DecisionTree = () => {
     <div className="min-h-screen bg-[#151C29] text-white flex items-start justify-center px-6 py-12">
       <div className="flex flex-col md:flex-row items-center gap-10 w-full max-w-6xl mt-4">
         <div className="relative flex flex-col items-center">
-          <motion.div
+            <motion.div
             initial={step === 0 ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="bg-[#1e293b] p-6 rounded-xl shadow-lg w-[280px] md:w-[300px] h-[230px] text-center relative flex flex-col justify-between"
+            className="bg-[#1e293b] p-6 rounded-xl shadow-lg w-[280px] md:w-[300px] min-h-[230px] text-center relative flex flex-col justify-between"
           >
             <div className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 w-0 h-0 
               border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#1e293b]" />
             <div className="text-4xl mb-3">{steps[step].img}</div>
-            <h2 className="text-base md:text-lg h-[160px] flex items-center justify-center">{steps[step].text}</h2>
-
-            <div className="mt-4 flex justify-center gap-4"> 
+            <h2 className="text-base md:text-lg flex-1 flex items-center justify-center px-2">{steps[step].text}</h2>            <div className="mt-4 flex justify-center gap-4"> 
               {step > 0 && (
                 <button
                   onClick={prevStep}

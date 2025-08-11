@@ -39,10 +39,11 @@ const InteractiveNode = ({
   // Efecto de scroll suave
   useEffect(() => {
     if (isOpen && containerRef.current) {
-      const duration = 700;
+      const duration = 400;
       const startScroll = window.pageYOffset;
-      const endScroll =
-        containerRef.current.getBoundingClientRect().top + window.pageYOffset - 100;
+      
+      const offset = window.innerHeight * 0.35;
+      const endScroll = containerRef.current.getBoundingClientRect().top + window.pageYOffset - offset;
 
       let startTime: number | null = null;
 

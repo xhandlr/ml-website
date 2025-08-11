@@ -263,13 +263,15 @@ const ComparisonPage: React.FC = () => {
 
           {/* Panel de visualización */}
           <div className="flex-1 flex flex-col items-center justify-center gap-6">
-            <div className="w-full max-w-xs bg-[#1e293b] p-6 rounded-lg shadow-lg border border-gray-700">
+            <div className="w-full max-w-xs bg-[#1e293b] p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col items-center">
               {tecnicaSeleccionada === "Árboles de Decisión" ? (
                 <>
                   <h3 className="text-xl font-semibold mb-4 text-center flex items-center justify-center gap-2">
                     <span>🌲</span> Visualización de Árbol
                   </h3>
-                  <DecisionTreeSimpleAnimation />
+                  <div className="flex justify-center items-center w-full">
+                    <DecisionTreeSimpleAnimation />
+                  </div>
                 </>
               ) : (
                 <>

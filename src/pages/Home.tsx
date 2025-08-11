@@ -114,10 +114,10 @@ const Home = () => {
             className="w-full max-w-xl lg:max-w-2xl object-contain animate-float"
             animate={{
               filter: [
-                'saturate(0.8) brightness(0.95) drop-shadow(0 0 0px transparent) hue-rotate(0deg)',
-                'saturate(1.3) brightness(1.05) drop-shadow(0 0 10px #f97316) hue-rotate(20deg)',
-                'saturate(1.3) brightness(1.05) drop-shadow(0 0 10px #f97316) hue-rotate(20deg)',
-                'saturate(0.8) brightness(0.95) drop-shadow(0 0 0px transparent) hue-rotate(0deg)'
+                'saturate(0.8) brightness(0.95) drop-shadow(0 0 0px transparent)',
+                'saturate(1.3) brightness(1.05) drop-shadow(0 0 10px #f97316)',
+                'saturate(1.3) brightness(1.05) drop-shadow(0 0 10px #f97316)',
+                'saturate(0.8) brightness(0.95) drop-shadow(0 0 0px transparent)'
               ],
             }}
             transition={{
