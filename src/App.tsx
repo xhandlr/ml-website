@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/ml-website">
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-1 pt-16">
